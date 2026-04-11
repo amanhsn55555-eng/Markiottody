@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>المتجر • منصتي</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Tajawal', sans-serif;
+    }
+
+  /* إخفاء زر الحذف */
+.buy-btn.delete {
+  display: none !important;
+}
+
+/* إخفاء زر إضافة منتج */
+.add-product-btn {
+  display: none !important;
+}
+  /* إخفاء زر الحذف */
+    body {
+      background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      color: #f8fafc;
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: 100px;
+    }
+
+    /* ========== هيدر المتجر ========== */
+    .shop-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 12px 16px;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .shop-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shop-header h2 i {
+      color: #fbbf24;
+    }
+
+    .back-btn {
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 20px;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      color: #fbbf24;
+    }
+
+    /* ========== شريط الموارد ========== */
+    .resources-bar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 10px 16px;
+      z-index: 998;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .resource-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 16px;
+      border-radius: 40px;
+    }
+
+    .resource-badge i { font-size: 14px; }
+    .resource-badge.money i { color: #10b981; }
+    .resource-badge.gold i { color: #fbbf24; }
+    .resource-badge span { font-weight: 800; font-size: 14px; }
+
+    /* ========== التبويبات ========== */
+    .shop-tabs {
+      position: fixed;
+      top: 115px;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 8px 16px;
+      z-index: 997;
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .shop-tab {
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .shop-tab.active {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+    }
+
+    /* ========== المحتوى ========== */
+    .shop-content {
+      margin-top: 170px;
+      padding: 16px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* بطاقة المنتج */
+    .product-card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      padding: 4px 10px;
+      border-radius: 2px;
+      font-size: 4px;
+      font-weight: 700;
+      background: #10b981;
+      color: white;
+    }
+
+    .product-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .product-preview {
+      width: 70px;
+      height: 70px;
+      border-radius: 18px;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      overflow: hidden;
+      border: 2px solid;
+      flex-shrink: 0;
+    }
+
+    .product-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-title {
+      font-weight: 800;
+      font-size: 16px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .product-meta {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .product-price {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .product-price.money { color: #10b981; }
+    .product-price.gold { color: #fbbf24; }
+    .product-price.elixir { color: #a78bfa; }
+
+    .product-uses {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .buy-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 15px;
+      border: none;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .buy-btn.primary {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+    }
+
+    .buy-btn.success {
+      background: #10b981;
+      color: white;
+    }
+
+    .buy-btn.delete {
+      background: #ef4444;
+      color: white;
+    }
+
+    .buy-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* زر إضافة منتج */
+    .add-product-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      max-width: 200px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      border: none;
+      padding: 16px 25px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
+      z-index: 100;
+    }
+
+    /* ========== المحفظة ========== */
+    .inventory-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .inventory-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .inventory-item {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 15px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+
+    .inventory-item:hover {
+      background: rgba(139, 92, 246, 0.1);
+      border-color: #8b5cf6;
+    }
+
+    .inventory-item.active {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .inventory-item.active::after {
+      content: '✓';
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 18px;
+      height: 18px;
+      background: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: white;
+    }
+
+    .inventory-preview {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      margin: 0 auto 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      overflow: hidden;
+      border: 2px solid;
+    }
+
+    .inventory-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .inventory-name {
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .inventory-badge {
+      font-size: 8px;
+      color: #94a3b8;
+    }
+
+    /* ========== نوافذ ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 4000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: #1e293b;
+      width: 100%;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 35px 35px 0 0;
+      padding: 25px 20px;
+      position: fixed;
+      bottom: 0;
+      transform: translateY(100%);
+      transition: transform 0.3s;
+    }
+
+    .active .modal-sheet {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .modal-header h3 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      font-size: 14px;
+      color: white;
+      outline: none;
+    }
+
+    .product-type-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .type-option {
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .type-option.selected {
+      border-color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.1);
+    }
+
+    .type-option i {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+    }
+
+    /* نافذة التبديل */
+    .switch-modal .modal-sheet {
+      max-width: 400px;
+    }
+
+    .switch-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .switch-option {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 20px;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .switch-option:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
+
+    .switch-option.active {
+      border-color: #10b981;
+    }
+
+    .switch-preview {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      overflow: hidden;
+      border: 3px solid;
+    }
+
+    .switch-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .delete-warning {
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 15px;
+      padding: 15px;
+      margin: 15px 0;
+      border-right: 3px solid #ef4444;
+      color: #fca5a5;
+      font-size: 13px;
+    }
+
+    /* ========== إشعار ========== */
+    #toastMsg {
+      position: fixed;
+      bottom: 100px;
+      left: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 50px;
+      text-align: center;
+      z-index: 5000;
+      opacity: 0;
+      transition: 0.25s;
+      pointer-events: none;
+      max-width: 400px;
+      margin: 0 auto;
+      font-weight: 600;
+    }
+
+    #toastMsg.show {
+      opacity: 1;
+      bottom: 110px;
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px;
+    }
+
+    .loading-spinner i {
+      font-size: 35px;
+      color: #8b5cf6;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+
+<div class="shop-header">
+  <div class="back-btn" onclick="goBack()">
+    <i class="fas fa-arrow-right"></i>
+  </div>
+  <h2><i class="fas fa-store"></i> المتجر</h2>
+  <div style="width: 24px;"></div>
+</div>
+
+<div class="resources-bar">
+  <div class="resource-badge money"><i class="fas fa-coins"></i> <span id="moneyDisplay">0</span></div>
+  <div class="resource-badge gold"><i class="fas fa-gem"></i> <span id="goldDisplay">0</span></div>
+  <div class="resource-badge"><i class="fas fa-flask"></i> <span id="elixirDisplay">0</span></div>
+</div>
+
+<div class="shop-tabs">
+  <div class="shop-tab active" data-tab="all" onclick="switchTab('all')"><i class="fas fa-th-large"></i> الكل</div>
+  <div class="shop-tab" data-tab="id" onclick="switchTab('id')"><i class="fas fa-id-card"></i> معرفات</div>
+  <div class="shop-tab" data-tab="frame" onclick="switchTab('frame')"><i class="fas fa-border-all"></i> أطر</div>
+  <div class="shop-tab" data-tab="name" onclick="switchTab('name')"><i class="fas fa-signature"></i> أسماء</div>
+  <div class="shop-tab" data-tab="avatar" onclick="switchTab('avatar')"><i class="fas fa-user-circle"></i> صور</div>
+  <div class="shop-tab" data-tab="verify" onclick="switchTab('verify')"><i class="fas fa-check-circle"></i> توثيق</div>
+  <div class="shop-tab" data-tab="inventory" onclick="switchTab('inventory')"><i class="fas fa-box"></i> مشترياتي</div>
+</div>
+
+<div class="shop-content" id="shopContent">
+  <div class="loading-spinner"><i class="fas fa-spinner"></i></div>
+</div>
+
+<button class="add-product-btn" onclick="openAddProductModal()">
+  <i class="fas fa-plus"></i> إضافة منتج
+</button>
+
+<!-- نافذة إضافة منتج -->
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>إضافة منتج جديد</h3>
+      <button class="close-btn" onclick="closeAddProductModal()">&times;</button>
+    </div>
+    
+    <div class="form-group">
+      <label>نوع المنتج</label>
+      <div class="product-type-selector">
+        <div class="type-option selected" data-type="id" onclick="selectProductType('id')">
+          <i class="fas fa-id-card"></i>
+          <div>معرف</div>
+        </div>
+        <div class="type-option" data-type="frame" onclick="selectProductType('frame')">
+          <i class="fas fa-border-all"></i>
+          <div>إطار</div>
+        </div>
+        <div class="type-option" data-type="name" onclick="selectProductType('name')">
+          <i class="fas fa-signature"></i>
+          <div>اسم</div>
+        </div>
+        <div class="type-option" data-type="avatar" onclick="selectProductType('avatar')">
+          <i class="fas fa-user-circle"></i>
+          <div>صورة</div>
+        </div>
+        <div class="type-option" data-type="verify" onclick="selectProductType('verify')">
+          <i class="fas fa-check-circle"></i>
+          <div>توثيق</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group" id="productIdGroup">
+      <label>المعرف (1-6 أرقام)</label>
+      <input type="text" id="productIdValue" placeholder="مثال: 123456" maxlength="6">
+    </div>
+    
+    <div class="form-group" id="productImageGroup">
+      <label>رابط الصورة</label>
+      <input type="text" id="productImage" placeholder="https://...">
+    </div>
+    
+    <div class="form-group">
+      <label>السعر</label>
+      <input type="number" id="productPrice" placeholder="المبلغ" min="1">
+    </div>
+    
+    <div class="form-group">
+      <label>نوع العملة</label>
+      <select id="productCurrency">
+        <option value="money">💰 مال</option>
+        <option value="gold">🪙 ذهب</option>
+        <option value="elixir">🧪 إكسير</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>عدد الاستخدامات (0 = دائم)</label>
+      <input type="number" id="productUses" placeholder="0" min="0" value="0">
+    </div>
+    
+    <button class="btn-submit" onclick="addProduct()">إضافة المنتج</button>
+  </div>
+</div>
+
+<!-- نافذة الشراء -->
+<div class="modal-overlay purchase-modal" id="purchaseModal">
+  <div class="modal-sheet" style="max-width: 380px;">
+    <div class="modal-header">
+      <h3>تأكيد الشراء</h3>
+      <button class="close-btn" onclick="closePurchaseModal()">&times;</button>
+    </div>
+    
+    <div class="purchase-preview" style="text-align: center; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 20px; margin-bottom: 20px;">
+      <div id="purchasePreviewItem" style="width: 80px; height: 80px; border-radius: 20px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 36px; overflow: hidden; border: 3px solid #8b5cf6;">
+        <span id="purchasePreviewContent">🎁</span>
+      </div>
+      <h4 id="purchaseTitle">اسم المنتج</h4>
+      <div class="purchase-price" id="purchasePrice" style="font-size: 28px; font-weight: 800;">0</div>
+    </div>
+    
+    <button class="btn-submit" onclick="confirmPurchase()">تأكيد الشراء</button>
+    <button class="btn-submit" style="background: #475569; margin-top: 10px;" onclick="closePurchaseModal()">إلغاء</button>
+  </div>
+</div>
+
+<!-- نافذة التبديل بين العناصر -->
+<div class="modal-overlay switch-modal" id="switchModal">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3 id="switchModalTitle">اختر العنصر</h3>
+      <button class="close-btn" onclick="closeSwitchModal()">&times;</button>
+    </div>
+    
+    <div class="switch-options" id="switchOptions"></div>
+    
+    <button class="btn-submit" onclick="confirmSwitch()">تأكيد التبديل</button>
+    <button class="btn-submit" style="background: #475569; margin-top: 10px;" onclick="closeSwitchModal()">إلغاء</button>
+  </div>
+</div>
+
+<!-- نافذة حذف المنتج -->
+<div class="modal-overlay" id="deleteProductModal">
+  <div class="modal-sheet" style="max-width: 380px;">
+    <div class="modal-header">
+      <h3><i class="fas fa-trash-alt" style="color: #ef4444;"></i> حذف المنتج</h3>
+      <button class="close-btn" onclick="closeDeleteProductModal()">&times;</button>
+    </div>
+    
+    <div class="delete-warning">
+      <i class="fas fa-info-circle"></i>
+      <span>سيتم حذف المنتج من المتجر فقط. الأعضاء الذين اشتروه سيحتفظون به.</span>
+    </div>
+    
+    <button class="btn-submit" style="background: #ef4444;" onclick="confirmDeleteProduct()">حذف المنتج</button>
+    <button class="btn-submit" style="background: #475569; margin-top: 10px;" onclick="closeDeleteProductModal()">إلغاء</button>
+  </div>
+</div>
+
+<div id="toastMsg"></div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, increment, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDYKCCTcurNcJslrNKqdiJCoIIK-YZArB4",
+    authDomain: "sbaq-fc46f.firebaseapp.com",
+    projectId: "sbaq-fc46f",
+    storageBucket: "sbaq-fc46f.firebasestorage.app",
+    appId: "1:1026865750415:web:0ee39a717bcafaa0d06bfa"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let currentUserData = null;
+  let resources = { money: 0, gold: 0, elixir: 0 };
+  let products = [];
+  let inventory = [];
+  let currentTab = 'all';
+  let selectedProductType = 'id';
+  let pendingPurchase = null;
+  let productToDelete = null;
+  let switchType = null;
+  let selectedSwitchId = null;
+
+  function showToast(msg, isSuccess = true) {
+    const t = document.getElementById('toastMsg');
+    if (!t) return;
+    t.textContent = msg;
+    t.style.background = isSuccess ? '#10b981' : '#ef4444';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // تعديل دالة الرجوع - بدون توجيه لصفحة 404
+  window.goBack = function() {
+    if (document.referrer && document.referrer.includes(window.location.hostname)) {
+      window.history.back();
+    } else {
+      showToast('لا توجد صفحة سابقة للرجوع إليها');
+    }
+  };
+
+  function formatNumber(num) {
+    return num?.toLocaleString('ar-SA') || '0';
+  }
+
+  async function loadUserData(uid) {
+    try {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        currentUserData = userDoc.data();
+        if (!currentUserData.colors) {
+          currentUserData.colors = { frame: '#fbbf24', name: '#0f172a', id: '#8b5cf6', text: '#334155' };
+        }
+        if (currentUserData.verified === undefined) {
+          currentUserData.verified = false;
+        }
+      }
+      
+      const resDoc = await getDoc(doc(db, "resources", uid));
+      if (resDoc.exists()) resources = resDoc.data();
+      
+      const invDoc = await getDoc(doc(db, "inventories", uid));
+      if (invDoc.exists()) {
+        inventory = invDoc.data().items || [];
+      } else {
+        await setDoc(doc(db, "inventories", uid), { items: [] });
+      }
+      
+      updateResourcesDisplay();
+    } catch (e) {}
+  }
+
+  function updateResourcesDisplay() {
+    document.getElementById('moneyDisplay').textContent = formatNumber(resources.money || 0);
+    document.getElementById('goldDisplay').textContent = formatNumber(resources.gold || 0);
+    document.getElementById('elixirDisplay').textContent = formatNumber(resources.elixir || 0);
+  }
+
+  function subscribeToProducts() {
+    const productsQuery = query(collection(db, "products"), orderBy("createdAt", "desc"));
+    onSnapshot(productsQuery, (snapshot) => {
+      products = [];
+      snapshot.forEach(doc => products.push({ id: doc.id, ...doc.data() }));
+      renderContent();
+    });
+  }
+
+  function renderContent() {
+    const container = document.getElementById('shopContent');
+    
+    if (currentTab === 'inventory') {
+      renderInventory(container);
+      return;
+    }
+    
+    let filtered = products.filter(p => currentTab === 'all' ? true : p.type === currentTab);
+    
+    if (filtered.length === 0) {
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-store-alt"></i><p>لا توجد منتجات</p></div>`;
+      return;
+    }
+    
+    container.innerHTML = filtered.map(product => {
+      const isOwned = inventory.some(item => item.productId === product.id);
+      const canAfford = (resources[product.currency] || 0) >= product.price;
+      const typeNames = { id: 'معرف', frame: 'إطار', name: 'اسم', avatar: 'صورة', verify: 'توثيق' };
+      
+      return `
+        <div class="product-card">
+          ${isOwned ? '<span class="product-badge"><i class="fas fa-check"></i> تملكه</span>' : ''}
+          <div class="product-header">
+            <div class="product-preview" style="border-color: #8b5cf6;">
+              ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='🎁'">` : getIcon(product.type)}
+            </div>
+            <div class="product-info">
+              <div class="product-title">
+                ${typeNames[product.type] || product.type}
+                ${product.type === 'verify' ? '<i class="fas fa-check-circle" style="color: #3b82f6;"></i>' : ''}
+              </div>
+              ${product.type === 'id' ? `<div style="font-size: 18px; font-weight: 800; margin: 5px 0;">#${product.idValue || ''}</div>` : ''}
+              <div class="product-meta">
+                <span class="product-price ${product.currency}">
+                  <i class="fas fa-${product.currency === 'money' ? 'coins' : (product.currency === 'gold' ? 'gem' : 'flask')}"></i>
+                  ${formatNumber(product.price)}
+                </span>
+                <span class="product-uses">
+                  <i class="fas fa-sync"></i> ${product.uses > 0 ? product.uses + ' استخدام' : 'دائم'}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="product-actions">
+            ${!isOwned ? `
+              <button class="buy-btn primary" onclick="openPurchaseModal('${product.id}')" ${!canAfford ? 'disabled' : ''}>
+                <i class="fas fa-shopping-cart"></i> ${canAfford ? 'شراء' : 'رصيد غير كافٍ'}
+              </button>
+            ` : `
+              <button class="buy-btn success" onclick="useProduct('${product.id}')">
+                <i class="fas fa-check"></i> استخدام
+              </button>
+            `}
+            <button class="buy-btn delete" onclick="openDeleteProductModal('${product.id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function getIcon(type) {
+    const icons = { id: '🆔', frame: '🎨', name: '📛', avatar: '👤', verify: '✓' };
+    return icons[type] || '🎁';
+  }
+
+  function renderInventory(container) {
+    if (inventory.length === 0) {
+      container.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><p>محفظتك فارغة</p></div>`;
+      return;
+    }
+    
+    const types = ['id', 'frame', 'name', 'avatar', 'verify'];
+    const typeNames = { id: 'معرفات', frame: 'أطر', name: 'أسماء', avatar: 'صور', verify: 'توثيق' };
+    const typeIcons = { id: 'id-card', frame: 'border-all', name: 'signature', avatar: 'user-circle', verify: 'check-circle' };
+    
+    container.innerHTML = types.map(type => {
+      const items = inventory.filter(item => {
+        const product = products.find(p => p.id === item.productId);
+        return product?.type === type;
+      });
+      
+      if (items.length === 0) return '';
+      
+      return `
+        <div class="inventory-section">
+          <div class="inventory-title">
+            <i class="fas fa-${typeIcons[type]}"></i> ${typeNames[type]}
+            <span style="margin-right: auto; font-size: 12px; color: #94a3b8;">${items.length}</span>
+          </div>
+          <div class="inventory-grid">
+            ${items.map(item => {
+              const product = products.find(p => p.id === item.productId);
+              if (!product) return '';
+              
+              const isActive = checkIfActive(type, item.id);
+              
+              return `
+                <div class="inventory-item ${isActive ? 'active' : ''}" onclick="switchItem('${type}')">
+                  <div class="inventory-preview" style="border-color: #8b5cf6;">
+                    ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='${getIcon(type)}'">` : getIcon(type)}
+                  </div>
+                  <div class="inventory-name">${product.idValue || typeNames[type]}</div>
+                  <div class="inventory-badge">${item.remainingUses === -1 ? 'دائم' : item.remainingUses + ' استخدام'}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function checkIfActive(type, itemId) {
+    if (!currentUserData) return false;
+    const checks = {
+      id: currentUserData.activeId,
+      frame: currentUserData.activeFrame,
+      name: currentUserData.activeName,
+      avatar: currentUserData.activeAvatar,
+      verify: currentUserData.activeVerify
+    };
+    return checks[type] === itemId;
+  }
+
+  window.switchTab = (tab) => {
+    currentTab = tab;
+    document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+    renderContent();
+  };
+
+  window.selectProductType = (type) => {
+    selectedProductType = type;
+    document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
+    document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+    
+    const idGroup = document.getElementById('productIdGroup');
+    const imageGroup = document.getElementById('productImageGroup');
+    
+    idGroup.style.display = type === 'id' ? 'block' : 'none';
+    imageGroup.style.display = type !== 'verify' ? 'block' : 'none';
+  };
+
+  window.openAddProductModal = () => {
+    document.getElementById('addProductModal').classList.add('active');
+    selectProductType('id');
+  };
+
+  window.closeAddProductModal = () => document.getElementById('addProductModal').classList.remove('active');
+
+  window.addProduct = async () => {
+    const type = selectedProductType;
+    const idValue = document.getElementById('productIdValue')?.value.trim() || '';
+    const image = document.getElementById('productImage')?.value.trim() || '';
+    const price = parseInt(document.getElementById('productPrice').value);
+    const currency = document.getElementById('productCurrency').value;
+    const uses = parseInt(document.getElementById('productUses').value) || 0;
+    
+    
+    if (type === 'id' && !idValue) { showToast('الرجاء إدخال المعرف', false); return; }
+    
+   if (type !== 'verify' && type !== 'id' && !image) { showToast('الرجاء إدخال رابط الصورة', false); return; }
+    if (!price || price < 1) { showToast('الرجاء إدخال سعر صحيح', false); return; }
+    
+    try {
+      await addDoc(collection(db, "products"), {
+        type, idValue, image, price, currency, uses, createdAt: Date.now()
+      });
+      closeAddProductModal();
+      showToast('تم إضافة المنتج');
+    } catch (e) {
+      showToast('فشل إضافة المنتج', false);
+    }
+  };
+
+  window.openPurchaseModal = (productId) => {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
+    pendingPurchase = product;
+    
+    document.getElementById('purchasePreviewContent').innerHTML = product.image ? 
+      `<img src="${product.image}" style="width:100%;height:100%;object-fit:cover;">` : getIcon(product.type);
+    document.getElementById('purchaseTitle').textContent = `${getTypeName(product.type)} ${product.idValue || ''}`;
+    document.getElementById('purchasePrice').innerHTML = `${formatNumber(product.price)} <i class="fas fa-${product.currency === 'money' ? 'coins' : (product.currency === 'gold' ? 'gem' : 'flask')}"></i>`;
+    
+    document.getElementById('purchaseModal').classList.add('active');
+  };
+
+  function getTypeName(type) {
+    const names = { id: 'معرف', frame: 'إطار', name: 'اسم', avatar: 'صورة', verify: 'توثيق' };
+    return names[type] || type;
+  }
+
+  window.closePurchaseModal = () => {
+    document.getElementById('purchaseModal').classList.remove('active');
+    pendingPurchase = null;
+  };
+
+  window.confirmPurchase = async () => {
+    if (!pendingPurchase) return;
+    
+    const product = pendingPurchase;
+    const currency = product.currency;
+    
+    if ((resources[currency] || 0) < product.price) {
+      showToast('رصيد غير كافٍ', false);
+      return;
+    }
+    
+    try {
+      await updateDoc(doc(db, "resources", currentUser.uid), { [currency]: increment(-product.price) });
+      resources[currency] -= product.price;
+      
+      const inventoryItem = {
+        id: 'inv_' + Date.now() + Math.random().toString(36),
+        productId: product.id,
+        purchasedAt: Date.now(),
+        remainingUses: product.uses || -1
+      };
+      
+      await updateDoc(doc(db, "inventories", currentUser.uid), { items: arrayUnion(inventoryItem) });
+      inventory.push(inventoryItem);
+      
+      closePurchaseModal();
+      updateResourcesDisplay();
+      renderContent();
+      showToast('تم الشراء بنجاح!');
+    } catch (e) {
+      showToast('فشل الشراء', false);
+    }
+  };
+
+  window.useProduct = async (productId) => {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    
+    const item = inventory.find(i => i.productId === productId);
+    if (!item) return;
+    
+    if (item.remainingUses === 0) {
+      showToast('لا توجد استخدامات متبقية', false);
+      return;
+    }
+    
+    try {
+      const updates = {};
+      
+      if (product.type === 'id') {
+        updates.userId = product.idValue;
+        updates.activeId = item.id;
+        currentUserData.userId = product.idValue;
+      } else if (product.type === 'frame') {
+        updates['colors.frame'] = product.image;
+        updates.activeFrame = item.id;
+        currentUserData.colors.frame = product.image;
+      } else if (product.type === 'name') {
+        updates.nameImage = product.image;
+        updates.activeName = item.id;
+        currentUserData.nameImage = product.image;
+      } else if (product.type === 'avatar') {
+        updates.avatarUrl = product.image;
+        updates.avatarType = 'image';
+        updates.activeAvatar = item.id;
+        currentUserData.avatarUrl = product.image;
+        currentUserData.avatarType = 'image';
+      } else if (product.type === 'verify') {
+        updates.verified = true;
+        updates.activeVerify = item.id;
+        currentUserData.verified = true;
+      }
+      
+      await updateDoc(doc(db, "users", currentUser.uid), updates);
+      
+      if (item.remainingUses > 0) {
+        const updatedInventory = inventory.map(i => 
+          i.id === item.id ? { ...i, remainingUses: i.remainingUses - 1 } : i
+        );
+        inventory = updatedInventory;
+        await setDoc(doc(db, "inventories", currentUser.uid), { items: updatedInventory });
+      }
+      
+      renderContent();
+      showToast('تم التفعيل!');
+    } catch (e) {
+      showToast('فشل التفعيل', false);
+    }
+  };
+
+  window.switchItem = (type) => {
+    const items = inventory.filter(item => {
+      const product = products.find(p => p.id === item.productId);
+      return product?.type === type;
+    });
+    
+    if (items.length === 0) {
+      showToast('لا توجد عناصر للتبديل', false);
+      return;
+    }
+    
+    switchType = type;
+    const typeNames = { id: 'معرف', frame: 'إطار', name: 'اسم', avatar: 'صورة', verify: 'توثيق' };
+    document.getElementById('switchModalTitle').textContent = `اختر ${typeNames[type]}`;
+    
+    const optionsContainer = document.getElementById('switchOptions');
+    optionsContainer.innerHTML = items.map(item => {
+      const product = products.find(p => p.id === item.productId);
+      if (!product) return '';
+      
+      const isActive = checkIfActive(type, item.id);
+      
+      return `
+        <div class="switch-option ${isActive ? 'active' : ''}" onclick="selectSwitchOption('${item.id}')">
+          <div class="switch-preview" style="border-color: ${type === 'frame' ? product.image : '#8b5cf6'};">
+            ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='${getIcon(type)}'">` : getIcon(type)}
+          </div>
+          <div>${product.idValue || typeNames[type]}</div>
+          <small style="color: #94a3b8;">${item.remainingUses === -1 ? 'دائم' : item.remainingUses + ' استخدام'}</small>
+        </div>
+      `;
+    }).join('');
+    
+    selectedSwitchId = items.find(item => checkIfActive(type, item.id))?.id || null;
+    
+    document.getElementById('switchModal').classList.add('active');
+  };
+
+  window.selectSwitchOption = (itemId) => {
+    selectedSwitchId = itemId;
+    document.querySelectorAll('.switch-option').forEach(o => o.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  };
+
+  window.confirmSwitch = async () => {
+    if (!switchType || !selectedSwitchId) {
+      showToast('الرجاء اختيار عنصر', false);
+      return;
+    }
+    
+    const item = inventory.find(i => i.id === selectedSwitchId);
+    if (!item) return;
+    
+    const product = products.find(p => p.id === item.productId);
+    if (!product) return;
+    
+    try {
+      const updates = {};
+      
+      if (switchType === 'id') {
+        updates.userId = product.idValue;
+        updates.activeId = item.id;
+        currentUserData.userId = product.idValue;
+      } else if (switchType === 'frame') {
+        updates['colors.frame'] = product.image;
+        updates.activeFrame = item.id;
+        currentUserData.colors.frame = product.image;
+      } else if (switchType === 'name') {
+        updates.nameImage = product.image;
+        updates.activeName = item.id;
+        currentUserData.nameImage = product.image;
+      } else if (switchType === 'avatar') {
+        updates.avatarUrl = product.image;
+        updates.avatarType = 'image';
+        updates.activeAvatar = item.id;
+        currentUserData.avatarUrl = product.image;
+        currentUserData.avatarType = 'image';
+      } else if (switchType === 'verify') {
+        updates.verified = true;
+        updates.activeVerify = item.id;
+        currentUserData.verified = true;
+      }
+      
+      await updateDoc(doc(db, "users", currentUser.uid), updates);
+      
+      closeSwitchModal();
+      renderContent();
+      showToast('تم التبديل بنجاح!');
+    } catch (e) {
+      showToast('فشل التبديل', false);
+    }
+  };
+
+  window.closeSwitchModal = () => {
+    document.getElementById('switchModal').classList.remove('active');
+    switchType = null;
+    selectedSwitchId = null;
+  };
+
+  window.openDeleteProductModal = (productId) => {
+    productToDelete = productId;
+    document.getElementById('deleteProductModal').classList.add('active');
+  };
+
+  window.closeDeleteProductModal = () => {
+    document.getElementById('deleteProductModal').classList.remove('active');
+    productToDelete = null;
+  };
+
+  window.confirmDeleteProduct = async () => {
+    if (!productToDelete) return;
+    try {
+      await deleteDoc(doc(db, "products", productToDelete));
+      closeDeleteProductModal();
+      showToast('تم حذف المنتج من المتجر');
+    } catch (e) {
+      showToast('فشل حذف المنتج', false);
+    }
+  };
+
+  // تعديل onAuthStateChanged - بدون توجيه لصفحة 404
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      await loadUserData(user.uid);
+      subscribeToProducts();
+    } else {
+      const container = document.getElementById('shopContent');
+      if (container) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-sign-in-alt"></i>
+            <p>يرجى تسجيل الدخول للوصول إلى المتجر</p>
+          </div>
+        `;
+      }
+    }
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('active'); });
+  });
+</script>
+</body>
+</html>
