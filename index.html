@@ -696,7 +696,19 @@
       font-size: 14px;
     }
 
-  
+  /* المحتوى داخل 90% من الشاشة مع تقلص تلقائي */
+.shop-content {
+  width: 90% !important;
+  max-width: 90% !important;
+  margin: 170px auto 0 auto !important;
+  padding: 16px 0 !important;
+}
+
+/* منع خروج المحتوى خارج الحدود */
+.shop-content * {
+  max-width: 100% !important;
+  word-wrap: break-word !important;
+}
     .form-group input, .form-group select {
       width: 100%;
       padding: 14px 16px;
