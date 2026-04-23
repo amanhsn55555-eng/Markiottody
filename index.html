@@ -6,6 +6,108 @@
   <title>المتجر • منصتي</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+  /* إخفاء زر إضافة منتج */
+  /* ========== هيدر موحد للموارد والتبويبات ========== */
+.resources-bar {
+  position: fixed;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important;
+  border: none !important;
+  box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important;
+  border-radius: 30px !important;
+  padding: 8px 12px !important;
+  z-index: 999;
+  display: flex;
+  justify-content: space-around;
+  backdrop-filter: blur(20px);
+  width: auto;
+}
+
+.shop-tabs {
+  position: fixed;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 70px 5px 5px 5px !important;
+  margin: 0 !important;
+  z-index: 998;
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  white-space: nowrap;
+  backdrop-filter: none;
+  width: auto;
+  pointer-events: none;
+}
+
+.shop-tabs .shop-tab {
+  pointer-events: auto;
+  background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important;
+  border: none !important;
+  box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important;
+  border-radius: 30px !important;
+  padding: 10px 18px !important;
+  font-size: 14px;
+  color: #1e293b !important;
+}
+
+.shop-tabs .shop-tab.active {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  color: white !important;
+}
+
+/* حاوية تجمع الشريطين معاً */
+.shop-header-wrapper {
+  position: fixed;
+  top: 8px;
+  left: 10px;
+  right: 10px;
+  background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important;
+  border: none !important;
+  box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important;
+  border-radius: 30px !important;
+  padding: 10px 12px !important;
+  z-index: 999;
+  backdrop-filter: blur(20px);
+}
+
+/* تعديل المحتوى */
+.shop-content {
+  margin-top: 160px;
+  padding: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.add-product-btn {
+  display: none !important;
+}
+
+/* إخفاء الهيدر مع تعديل المسافات */
+.shop-header {
+  display: none !important;
+}
+
+/* تعديل مسافة الموارد لتبدأ من الأعلى */
+.resources-bar {
+  top: 0 !important;
+}
+
+/* تعديل مسافة التبويبات */
+.shop-tabs {
+  top: 55px !important;
+}
+
+/* تعديل مسافة المحتوى */
+.shop-content {
+  margin-top: 110px !important;
+}
     * {
       margin: 0;
       padding: 0;
@@ -13,17 +115,8 @@
       font-family: 'Segoe UI', 'Tajawal', sans-serif;
     }
 
-  /* إخفاء زر الحذف */
-  .resources-bar { top: 0 !important; }
-.shop-tabs { top: 55px !important; }
-.shop-content { margin-top: 110px !important; }
-  /* إخفاء زر الرجوع فقط */
-.back-btn { display: none !important; }
-
-/* إخفاء زر إضافة منتج فقط */
-.add-product-btn { display: none !important; }
-
     body {
+      margin-top: 8px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
       background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
       min-height: 100vh;
       color: #f8fafc;
@@ -75,9 +168,13 @@
     }
 
     /* ========== شريط الموارد ========== */
+  
     .resources-bar {
+      color:blue;
+      
+      
       position: fixed;
-      top: 60px;
+      top: 50px;
       left: 0;
       right: 0;
       background: rgba(15, 23, 42, 0.95);
@@ -90,53 +187,62 @@
     }
 
     .resource-badge {
-      display: flex;
+            display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 0px;
       background: rgba(255, 255, 255, 0.05);
       padding: 6px 16px;
       border-radius: 40px;
     }
 
-    .resource-badge i { font-size: 14px; }
+    .resource-badge i { font-size: 24px; }
     .resource-badge.money i { color: #10b981; }
     .resource-badge.gold i { color: #fbbf24; }
     .resource-badge span { font-weight: 800; font-size: 14px; }
 
     /* ========== التبويبات ========== */
     .shop-tabs {
+      color:green;
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
       position: fixed;
       top: 115px;
       left: 0;
       right: 0;
       background: rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(20px);
-      padding: 8px 16px;
+      padding: 9px 16px;
       z-index: 997;
       display: flex;
-      gap: 8px;
+      gap: 0px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       overflow-x: auto;
       white-space: nowrap;
     }
 
     .shop-tab {
-      padding: 10px 18px;
+      
+         position: absoute;
+      top: 1px;
+   
+      
+            padding: 21px 8px;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 30px;
-      font-size: 13px;
+      font-size: 17px;
       font-weight: 600;
       cursor: pointer;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .shop-tab.active {
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
       background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       color: white;
     }
 
     /* ========== المحتوى ========== */
     .shop-content {
+      
       margin-top: 170px;
       padding: 16px;
       max-width: 600px;
@@ -146,6 +252,7 @@
 
     /* بطاقة المنتج */
     .product-card {
+      
       background: linear-gradient(145deg, #1e293b, #0f172a);
       border-radius: 20px;
       padding: 18px;
@@ -153,20 +260,78 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
       position: relative;
     }
+.product-card {
+  margin-top: 8px;
+  background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important;
+  border: none !important;
+  box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important;
+  border-radius: 30px !important;
+  padding: 18px !important;
+  margin-bottom: 16px;
+  position: relative;
+  color: #0f172a !important;
+}
 
+/* تعديل لون النصوص داخل البطاقة لتتناسب مع الخلفية الفاتحة */
+.product-card .product-title,
+.product-card .product-meta,
+.product-card .product-uses,
+.product-card .inventory-name {
+  color: #1e293b !important;
+}
+
+/* تعديل ألوان الأسعار */
+.product-card .product-price.money {
+  color: #059669 !important;
+}
+
+.product-card .product-price.gold {
+  color: #b45309 !important;
+}
+
+.product-card .product-price.elixir {
+  color: #6d28d9 !important;
+}
+
+/* تعديل خلفية الأزرار */
+.product-card .buy-btn.primary {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1), -1px -1px 3px rgba(255,255,255,0.8) !important;
+}
+
+.product-card .buy-btn.success {
+  background: #10b981 !important;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1), -1px -1px 3px rgba(255,255,255,0.8) !important;
+}
+
+.product-card .buy-btn.delete {
+  background: #ef4444 !important;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1), -1px -1px 3px rgba(255,255,255,0.8) !important;
+}
+
+/* تعديل خلفية معاينة المنتج */
+.product-card .product-preview {
+  background: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: inset 1px 1px 3px #94a3b8, inset -1px -1px 3px #ffffff !important;
+}
     .product-badge {
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
+
       position: absolute;
       top: 12px;
       left: 12px;
+      color:green;
       padding: 4px 10px;
       border-radius: 2px;
       font-size: 4px;
       font-weight: 700;
       background: #10b981;
-      color: white;
+     
     }
 
     .product-header {
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
+
       display: flex;
       align-items: center;
       gap: 15px;
@@ -174,6 +339,7 @@
     }
 
     .product-preview {
+      
       width: 70px;
       height: 70px;
       border-radius: 18px;
@@ -187,6 +353,69 @@
       flex-shrink: 0;
     }
 
+    /* حاوية خاصة لصور الاسم - مستطيلة 305×60 */
+    .product-preview.name-preview {
+      width: 385px;
+      max-width: 100%;
+      height: 60px;
+      border-radius: 12px;
+    }
+  /* حاوية خاصة لصور الاسم - مستطيلة 305×60 */
+.product-preview.name-preview {
+  width: 305px;
+  max-width: 100%;
+  height: 60px;
+  border-radius: 12px;
+}
+
+.product-preview.name-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* تم التغيير من cover إلى contain */
+  background: rgba(0, 0, 0, 0.2); /* خلفية للمساحات الفارغة */
+}
+
+  /* جعل سعر الشراء في نفس صف زر الشراء لمنتجات الاسم */
+.product-card:has(.name-preview) .product-meta {
+  display: inline-flex;
+  margin-left: 10px;
+}
+
+.product-card:has(.name-preview) .product-header {
+  flex-wrap: wrap;
+}
+
+.product-card:has(.name-preview) .product-actions {
+  margin-top: 10px;
+}
+/* حاوية خاصة لصور الاسم في المحفظة */
+.inventory-preview.name-preview {
+  width: 100%;
+  height: 35px;
+  border-radius: 8px;
+}
+
+.inventory-preview.name-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* تم التغيير من cover إلى contain */
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* حاوية خاصة لصور الاسم في نافذة التبديل */
+.switch-preview.name-preview {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.switch-preview.name-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* تم التغيير من cover إلى contain */
+  background: rgba(0, 0, 0, 0.2);
+}
+
     .product-preview img {
       width: 100%;
       height: 100%;
@@ -194,10 +423,13 @@
     }
 
     .product-info {
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
+
       flex: 1;
     }
 
     .product-title {
+      
       font-weight: 800;
       font-size: 16px;
       margin-bottom: 5px;
@@ -207,12 +439,15 @@
     }
 
     .product-meta {
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
+
       display: flex;
       align-items: center;
       gap: 15px;
     }
 
     .product-price {
+      
       display: flex;
       align-items: center;
       gap: 5px;
@@ -236,6 +471,9 @@
     }
 
     .buy-btn {
+      
+      margin-top: 0px; background: linear-gradient(145deg, #f8fafc, #e2e8f0) !important; border: none !important; box-shadow: inset 2px 2px 5px #ffffff, inset -2px -2px 5px #94a3b8, 3px 3px 8px rgba(0,0,0,0.1), -1px -1px 4px rgba(255,255,255,0.6) !important; border-radius: 30px !important; padding: 2px 2px 2px 10px !important; display: flex; align-items: center;
+
       flex: 1;
       padding: 12px;
       border-radius: 15px;
@@ -365,6 +603,13 @@
       border: 2px solid;
     }
 
+    /* حاوية خاصة لصور الاسم في المحفظة */
+    .inventory-preview.name-preview {
+      width: 100%;
+      height: 35px;
+      border-radius: 8px;
+    }
+
     .inventory-preview img {
       width: 100%;
       height: 100%;
@@ -385,6 +630,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
+      color:red;
       background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(8px);
       z-index: 4000;
@@ -450,6 +696,7 @@
       font-size: 14px;
     }
 
+  
     .form-group input, .form-group select {
       width: 100%;
       padding: 14px 16px;
@@ -487,6 +734,7 @@
     }
 
     .btn-submit {
+      
       background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       color: white;
       border: none;
@@ -538,6 +786,13 @@
       font-size: 28px;
       overflow: hidden;
       border: 3px solid;
+    }
+
+    /* حاوية خاصة لصور الاسم في نافذة التبديل */
+    .switch-preview.name-preview {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
     }
 
     .switch-preview img {
@@ -614,25 +869,26 @@
   </div>
   <h2><i class="fas fa-store"></i> المتجر</h2>
   <div style="width: 24px;"></div>
+</div>
+
+<div class="shop-header-wrapper">
+  <div class="resources-bar">
+    <div class="resource-badge money"><i class="fas fa-coins"></i> <span id="moneyDisplay">0</span></div>
+    <div class="resource-badge gold"><i class="fas fa-gem"></i> <span id="goldDisplay">0</span></div>
+    <div class="resource-badge"><i class="fas fa-flask"></i> <span id="elixirDisplay">0</span></div>
+  </div>
   
-<div class="resources-bar">
-  <div class="resource-badge money"><i class="fas fa-coins"></i> <span id="moneyDisplay">0</span></div>
-  <div class="resource-badge gold"><i class="fas fa-gem"></i> <span id="goldDisplay">0</span></div>
-  <div class="resource-badge"><i class="fas fa-flask"></i> <span id="elixirDisplay">0</span></div>
+  <div class="shop-tabs">
+    
+    <div class="shop-tab active" data-tab="all" onclick="switchTab('all')"><i class="fas fa-th-large"></i> الكل</div>
+    <div class="shop-tab" data-tab="id" onclick="switchTab('id')"><i class="fas fa-id-card"></i> معرفات</div>
+    <div class="shop-tab" data-tab="frame" onclick="switchTab('frame')"><i class="fas fa-border-all"></i> أطر</div>
+    <div class="shop-tab" data-tab="name" onclick="switchTab('name')"><i class="fas fa-signature"></i> أسماء</div>
+    <div class="shop-tab" data-tab="avatar" onclick="switchTab('avatar')"><i class="fas fa-user-circle"></i> صور</div>
+    <div class="shop-tab" data-tab="verify" onclick="switchTab('verify')"><i class="fas fa-check-circle"></i> توثيق</div>
+    <div class="shop-tab" data-tab="inventory" onclick="switchTab('inventory')"><i class="fas fa-box"></i> مشترياتي</div>
+  </div>
 </div>
-
-</div>
-
-<div class="shop-tabs">
-  <div class="shop-tab active" data-tab="all" onclick="switchTab('all')"><i class="fas fa-th-large"></i> الكل</div>
-  <div class="shop-tab" data-tab="id" onclick="switchTab('id')"><i class="fas fa-id-card"></i> معرفات</div>
-  <div class="shop-tab" data-tab="frame" onclick="switchTab('frame')"><i class="fas fa-border-all"></i> أطر</div>
-  <div class="shop-tab" data-tab="name" onclick="switchTab('name')"><i class="fas fa-signature"></i> أسماء</div>
-  <div class="shop-tab" data-tab="avatar" onclick="switchTab('avatar')"><i class="fas fa-user-circle"></i> صور</div>
-  <div class="shop-tab" data-tab="verify" onclick="switchTab('verify')"><i class="fas fa-check-circle"></i> توثيق</div>
-  <div class="shop-tab" data-tab="inventory" onclick="switchTab('inventory')"><i class="fas fa-box"></i> مشترياتي</div>
-</div>
-
 <div class="shop-content" id="shopContent">
   <div class="loading-spinner"><i class="fas fa-spinner"></i></div>
 </div>
@@ -879,12 +1135,15 @@
       const canAfford = (resources[product.currency] || 0) >= product.price;
       const typeNames = { id: 'معرف', frame: 'إطار', name: 'اسم', avatar: 'صورة', verify: 'توثيق' };
       
+      // إضافة كلاس خاص لصور الاسم
+      const previewClass = product.type === 'name' ? 'product-preview name-preview' : 'product-preview';
+      
       return `
         <div class="product-card">
           ${isOwned ? '<span class="product-badge"><i class="fas fa-check"></i> تملكه</span>' : ''}
           <div class="product-header">
-            <div class="product-preview" style="border-color: #8b5cf6;">
-              ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='🎁'">` : getIcon(product.type)}
+            <div class="${previewClass}" style="border-color: #8b5cf6;">
+              ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='${getIcon(product.type)}'">` : getIcon(product.type)}
             </div>
             <div class="product-info">
               <div class="product-title">
@@ -958,9 +1217,12 @@
               
               const isActive = checkIfActive(type, item.id);
               
+              // إضافة كلاس خاص لصور الاسم في المحفظة
+              const previewClass = type === 'name' ? 'inventory-preview name-preview' : 'inventory-preview';
+              
               return `
                 <div class="inventory-item ${isActive ? 'active' : ''}" onclick="switchItem('${type}')">
-                  <div class="inventory-preview" style="border-color: #8b5cf6;">
+                  <div class="${previewClass}" style="border-color: #8b5cf6;">
                     ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='${getIcon(type)}'">` : getIcon(type)}
                   </div>
                   <div class="inventory-name">${product.idValue || typeNames[type]}</div>
@@ -1042,6 +1304,19 @@
     if (!product) return;
     
     pendingPurchase = product;
+    
+    // تنسيق خاص لصورة الاسم في نافذة الشراء
+    const previewItem = document.getElementById('purchasePreviewItem');
+    if (product.type === 'name') {
+      previewItem.style.width = '305px';
+      previewItem.style.maxWidth = '100%';
+      previewItem.style.height = '60px';
+      previewItem.style.borderRadius = '12px';
+    } else {
+      previewItem.style.width = '80px';
+      previewItem.style.height = '80px';
+      previewItem.style.borderRadius = '20px';
+    }
     
     document.getElementById('purchasePreviewContent').innerHTML = product.image ? 
       `<img src="${product.image}" style="width:100%;height:100%;object-fit:cover;">` : getIcon(product.type);
@@ -1173,9 +1448,12 @@
       
       const isActive = checkIfActive(type, item.id);
       
+      // إضافة كلاس خاص لصور الاسم في نافذة التبديل
+      const previewClass = type === 'name' ? 'switch-preview name-preview' : 'switch-preview';
+      
       return `
         <div class="switch-option ${isActive ? 'active' : ''}" onclick="selectSwitchOption('${item.id}')">
-          <div class="switch-preview" style="border-color: ${type === 'frame' ? product.image : '#8b5cf6'};">
+          <div class="${previewClass}" style="border-color: ${type === 'frame' ? product.image : '#8b5cf6'};">
             ${product.image ? `<img src="${product.image}" onerror="this.innerHTML='${getIcon(type)}'">` : getIcon(type)}
           </div>
           <div>${product.idValue || typeNames[type]}</div>
