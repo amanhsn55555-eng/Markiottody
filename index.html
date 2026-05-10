@@ -1052,6 +1052,39 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  // ========== نظام الكاش التلقائي للمتجر (24 ساعة) ==========
+const SHOP_CACHE_KEY = 'shop_ui_cache';
+const SHOP_CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة
+
+const ShopCache = {
+  save(shopHTML) {
+    try {
+      const cache = { html: shopHTML, timestamp: Date.now() };
+      localStorage.setItem(SHOP_CACHE_KEY, JSON.stringify(cache));
+    } catch (e) {}
+  },
+
+  load() {
+    try {
+      const cached = localStorage.getItem(SHOP_CACHE_KEY);
+      if (!cached) return null;
+      const { html, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp > SHOP_CACHE_DURATION) {
+        localStorage.removeItem(SHOP_CACHE_KEY);
+        return null;
+      }
+      return html;
+    } catch (e) { return null; }
+  }
+};
+
+// ✅ عرض الكاش فوراً
+(function() {
+  const cachedHTML = ShopCache.load();
+  if (cachedHTML) {
+    document.getElementById('shopContent').innerHTML = cachedHTML;
+  }
+})();
   let currentUser = null;
   let currentUserData = null;
   let resources = { money: 0, gold: 0, elixir: 0 };
@@ -1143,7 +1176,7 @@
       return;
     }
     
-    container.innerHTML = filtered.map(product => {
+    const html = filtered.map(product => {
       const isOwned = inventory.some(item => item.productId === product.id);
       const canAfford = (resources[product.currency] || 0) >= product.price;
       const typeNames = { id: 'معرف', frame: 'إطار', name: 'اسم', avatar: 'صورة', verify: 'توثيق' };
@@ -1192,8 +1225,15 @@
         </div>
       `;
     }).join('');
+    container.innerHTML = html;
+
+// ✅ حفظ تلقائي في الكاش
+if (currentTab === 'all') {
+  ShopCache.save(html);
+}
   }
 
+  
   function getIcon(type) {
     const icons = { id: '🆔', frame: '🎨', name: '📛', avatar: '👤', verify: '✓' };
     return icons[type] || '🎁';
